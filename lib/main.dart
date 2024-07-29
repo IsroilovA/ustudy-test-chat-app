@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ustudy_test_task/auth/auth_screen.dart';
+import 'package:ustudy_test_task/auth/cubit/auth_cubit.dart';
 import 'package:ustudy_test_task/firebase_options.dart';
 
 void main() async {
@@ -22,7 +24,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData().copyWith(
           colorScheme: ColorScheme.fromSeed(
               seedColor: const Color.fromARGB(255, 63, 17, 177))),
-      home: const AuthScreen(),
+      home: BlocProvider(
+        create: (context) => AuthCubit(),
+        child: const AuthScreen(),
+      ),
     );
   }
 }

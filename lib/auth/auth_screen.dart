@@ -13,70 +13,24 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreenState extends State<AuthScreen> {
   final _form = GlobalKey<FormState>();
-  var _isLogin = true;
-  var _isAuthenticating = false;
-
+  var _enteredEmail = '';
+  var _enteredPassword = '';
   void _submit() async {
     final isValid = _form.currentState!.validate();
     if (!isValid) {
       return;
     }
     _form.currentState!.save();
-    BlocProvider.of<AuthCubit>(context).auth();
-    //catch any firebase error
-    // try {
-    //   setState(() {
-    //     _isAuthenticating = true;
-    //   });
-    //   if (_isLogin) {
-    //     //log users in
-    //     await _firebase.signInWithEmailAndPassword(
-    //       email: _enteredEmail,
-    //       password: _enteredPassword,
-    //     );
-    //   } else {
-    //     //sign up
-    //     final userCredentials = await _firebase.createUserWithEmailAndPassword(
-    //       email: _enteredEmail,
-    //       password: _enteredPassword,
-    //     );
-    //     final storageRef = FirebaseStorage.instance
-    //         .ref()
-    //         .child('user_images')
-    //         .child('${userCredentials.user!.uid}.jpg');
-    //     await storageRef.putFile(_selectedImage!);
-    //     final imageUrl = await storageRef.getDownloadURL();
-
-    //     await FirebaseFirestore.instance
-    //         .collection('users')
-    //         .doc(userCredentials.user!.uid)
-    //         .set({
-    //       'username': _enteredUsername,
-    //       'email': _enteredEmail,
-    //       'image_url': imageUrl,
-    //     });
-    //   }
-    // } on FirebaseAuthException catch (e) {
-    //   ScaffoldMessenger.of(context).clearSnackBars();
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     SnackBar(
-    //       content: Text(e.message ?? 'Authentication failed'),
-    //     ),
-    //   );
-    //   setState(() {
-    //     _isAuthenticating = false;
-    //   });
-    // }
+    BlocProvider.of<AuthCubit>(context).auth(
+      email: _enteredEmail,
+      password: _enteredPassword,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
-      appBar: AppBar(
-        title: const Text("UStudy test"),
-        centerTitle: true,
-      ),
       body: Center(
         child: Card(
           margin: const EdgeInsets.all(20),
@@ -102,9 +56,9 @@ class _AuthScreenState extends State<AuthScreen> {
                       }
                       return null;
                     },
-                    // onSaved: (value) {
-                    //   _enteredEmail = value!;
-                    // },
+                    onSaved: (value) {
+                      _enteredEmail = value!;
+                    },
                   ),
                   TextFormField(
                     validator: (value) {
@@ -117,32 +71,63 @@ class _AuthScreenState extends State<AuthScreen> {
                       labelText: 'Password',
                     ),
                     obscureText: true,
-                    // onSaved: (value) {
-                    //   _enteredPassword = value!;
-                    // },
+                    onSaved: (value) {
+                      _enteredPassword = value!;
+                    },
                   ),
                   const SizedBox(height: 20),
-                  // if (_isAuthenticating)
-                  //   const CircularProgressIndicator.adaptive(),
-                  // if (!_isAuthenticating)
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          Theme.of(context).colorScheme.primaryContainer,
-                    ),
-                    onPressed: () {},
-                    child: Text(_isLogin ? 'Login' : "Sign Up"),
-                  ),
-                  // if (!_isAuthenticating)
-                  TextButton(
-                    onPressed: () {
-                      setState(() {
-                        _isLogin = !_isLogin;
-                      });
+                  BlocConsumer<AuthCubit, AuthState>(
+                    listener: (context, state) {
+                      if (state is AuthError) {
+                        ScaffoldMessenger.of(context).clearSnackBars();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content:
+                                Text(state.message ?? 'Authentication failed'),
+                          ),
+                        );
+                      }
                     },
-                    child: Text(
-                      _isLogin ? "Create an account" : 'I have an account',
-                    ),
+                    builder: (context, state) {
+                      if (state is AuthLoading) {
+                        return const CircularProgressIndicator.adaptive();
+                      }
+                      return Column(
+                        children: [
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Theme.of(context)
+                                  .colorScheme
+                                  .primaryContainer,
+                            ),
+                            onPressed: () {
+                              final isValid = _form.currentState!.validate();
+                              if (!isValid) {
+                                return;
+                              }
+                              _form.currentState!.save();
+                              BlocProvider.of<AuthCubit>(context).auth(
+                                email: _enteredEmail,
+                                password: _enteredPassword,
+                              );
+                            },
+                            child: Text(state.isLogin ? 'Login' : "Sign Up"),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              setState(() {
+                                BlocProvider.of<AuthCubit>(context).changeMod();
+                              });
+                            },
+                            child: Text(
+                              state.isLogin
+                                  ? "Create an account"
+                                  : 'I have an account',
+                            ),
+                          ),
+                        ],
+                      );
+                    },
                   ),
                 ],
               ),
