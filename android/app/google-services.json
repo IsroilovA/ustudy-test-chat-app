@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "33163589701",
+    "project_id": "ustudy-test",
+    "storage_bucket": "ustudy-test.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:33163589701:android:d07e535ff4c1d82ea64b2c",
+        "android_client_info": {
+          "package_name": "com.example.ustudy_test_task"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJA9RAadWW7cPuSDCdkKSLd1ZLQ9lmvFM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

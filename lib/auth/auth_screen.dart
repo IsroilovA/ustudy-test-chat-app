@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ustudy_test_task/auth/cubit/auth_cubit.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -9,9 +11,64 @@ class AuthScreen extends StatefulWidget {
   }
 }
 
-class _AuthScreenState extends State<AuthScreen>{
+class _AuthScreenState extends State<AuthScreen> {
   final _form = GlobalKey<FormState>();
   var _isLogin = true;
+  var _isAuthenticating = false;
+
+  void _submit() async {
+    final isValid = _form.currentState!.validate();
+    if (!isValid) {
+      return;
+    }
+    _form.currentState!.save();
+    BlocProvider.of<AuthCubit>(context).auth();
+    //catch any firebase error
+    // try {
+    //   setState(() {
+    //     _isAuthenticating = true;
+    //   });
+    //   if (_isLogin) {
+    //     //log users in
+    //     await _firebase.signInWithEmailAndPassword(
+    //       email: _enteredEmail,
+    //       password: _enteredPassword,
+    //     );
+    //   } else {
+    //     //sign up
+    //     final userCredentials = await _firebase.createUserWithEmailAndPassword(
+    //       email: _enteredEmail,
+    //       password: _enteredPassword,
+    //     );
+    //     final storageRef = FirebaseStorage.instance
+    //         .ref()
+    //         .child('user_images')
+    //         .child('${userCredentials.user!.uid}.jpg');
+    //     await storageRef.putFile(_selectedImage!);
+    //     final imageUrl = await storageRef.getDownloadURL();
+
+    //     await FirebaseFirestore.instance
+    //         .collection('users')
+    //         .doc(userCredentials.user!.uid)
+    //         .set({
+    //       'username': _enteredUsername,
+    //       'email': _enteredEmail,
+    //       'image_url': imageUrl,
+    //     });
+    //   }
+    // } on FirebaseAuthException catch (e) {
+    //   ScaffoldMessenger.of(context).clearSnackBars();
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     SnackBar(
+    //       content: Text(e.message ?? 'Authentication failed'),
+    //     ),
+    //   );
+    //   setState(() {
+    //     _isAuthenticating = false;
+    //   });
+    // }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,28 +127,25 @@ class _AuthScreenState extends State<AuthScreen>{
                       // if (_isAuthenticating)
                       //   const CircularProgressIndicator.adaptive(),
                       // if (!_isAuthenticating)
-                      //   ElevatedButton(
-                      //     style: ElevatedButton.styleFrom(
-                      //       backgroundColor: Theme.of(context)
-                      //           .colorScheme
-                      //           .primaryContainer,
-                      //     ),
-                      //     onPressed: _submit,
-                      //     child: Text(_isLogin ? 'Login' : "Sign Up"),
-                      //   ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primaryContainer,
+                        ),
+                        onPressed: () {},
+                        child: Text(_isLogin ? 'Login' : "Sign Up"),
+                      ),
                       // if (!_isAuthenticating)
-                      //   TextButton(
-                      //     onPressed: () {
-                      //       setState(() {
-                      //         _isLogin = !_isLogin;
-                      //       });
-                      //     },
-                      //     child: Text(
-                      //       _isLogin
-                      //           ? "Create an account"
-                      //           : 'I have an account',
-                      //     ),
-                      //   ),
+                      TextButton(
+                        onPressed: () {
+                          setState(() {
+                            _isLogin = !_isLogin;
+                          });
+                        },
+                        child: Text(
+                          _isLogin ? "Create an account" : 'I have an account',
+                        ),
+                      ),
                     ],
                   ),
                 ),
