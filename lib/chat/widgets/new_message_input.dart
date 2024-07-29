@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ustudy_test_task/chat/cubit/chat_cubit.dart';
 
 class NewMessagesInput extends StatefulWidget {
   const NewMessagesInput({super.key});
@@ -34,7 +36,15 @@ class _NewMessagesInputState extends State<NewMessagesInput> {
           ),
           IconButton(
               color: Theme.of(context).colorScheme.primary,
-              onPressed: () {},
+              onPressed: () {
+                final enteredText = _messageController.text;
+                if (enteredText.trim().isEmpty) {
+                  return;
+                }
+                FocusScope.of(context).unfocus();
+                _messageController.clear();
+                BlocProvider.of<ChatCubit>(context).sendMessage(enteredText);
+              },
               icon: const Icon(Icons.send))
         ],
       ),

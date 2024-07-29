@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ustudy_test_task/chat/cubit/chat_cubit.dart';
 import 'package:ustudy_test_task/chat/widgets/chat_messages.dart';
 import 'package:ustudy_test_task/chat/widgets/new_message_input.dart';
 
@@ -28,12 +30,15 @@ class _ChatScreenState extends State<ChatScreen> {
               )),
         ],
       ),
-      body: const Column(
+      body: Column(
         children: [
-          Expanded(
+          const Expanded(
             child: ChatMessages(),
           ),
-          NewMessagesInput(),
+          BlocProvider(
+            create: (context) => ChatCubit(),
+            child: const NewMessagesInput(),
+          ),
         ],
       ),
     );
