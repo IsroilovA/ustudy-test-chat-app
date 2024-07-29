@@ -19,7 +19,7 @@ class _NewMessagesInputState extends State<NewMessagesInput> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 15, right: 1, bottom: 14),
+      padding: const EdgeInsets.only(left: 15, right: 1, bottom: 35),
       child: Row(
         children: [
           Expanded(
