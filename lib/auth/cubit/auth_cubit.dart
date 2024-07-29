@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
 
@@ -24,15 +23,8 @@ class AuthCubit extends Cubit<AuthState> {
         );
       } else {
         //sign up
-        final userCredentials = await _firebase.createUserWithEmailAndPassword(
+        await _firebase.createUserWithEmailAndPassword(
             email: email, password: password);
-
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(userCredentials.user!.uid)
-            .set({
-          'email': email,
-        });
       }
     } on FirebaseAuthException catch (e) {
       emit(AuthError(state.isLogin, e.message));
