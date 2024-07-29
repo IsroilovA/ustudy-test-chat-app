@@ -58,7 +58,8 @@ class ChatMessages extends StatelessWidget {
                 isMe: authenticatedUser.uid == currentMessageUserId,
               );
             } else {
-              return MessageBubble.last(
+              return MessageBubble.first(
+                useremail: chatMessage['userEmail'],
                 timestamp: chatMessage['createdAt'].toDate(),
                 message: chatMessage['text'],
                 isMe: authenticatedUser.uid == currentMessageUserId,

@@ -37,7 +37,6 @@ class AuthCubit extends Cubit<AuthState> {
     } on FirebaseAuthException catch (e) {
       emit(AuthError(state.isLogin, e.message));
     }
-    emit(AuthInitial(state.isLogin));
   }
 
   void changeMod() {
