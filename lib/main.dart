@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:ustudy_test_task/auth/auth_screen.dart';
 
 void main() async {
   runApp(const MyApp());
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData().copyWith(
           colorScheme: ColorScheme.fromSeed(
               seedColor: const Color.fromARGB(255, 63, 17, 177))),
-      home: const Text('data'),
+      home: const AuthScreen(),
     );
   }
 }
