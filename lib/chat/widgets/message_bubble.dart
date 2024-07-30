@@ -64,7 +64,6 @@ class MessageBubble extends StatelessWidget {
                   bottomRight: const Radius.circular(12),
                 ),
               ),
-              constraints: const BoxConstraints(maxWidth: 200),
               padding: const EdgeInsets.symmetric(
                 vertical: 10,
                 horizontal: 14,
@@ -72,33 +71,33 @@ class MessageBubble extends StatelessWidget {
               child: IntrinsicWidth(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      message,
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            color: isMe
-                                ? Theme.of(context).colorScheme.onPrimary
-                                : Theme.of(context).colorScheme.onSurface,
-                          ),
-                      softWrap: true,
+                    Container(
+                      constraints:
+                          const BoxConstraints(maxWidth: 150, minWidth: 90),
+                      child: Text(
+                        message,
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                              color: isMe
+                                  ? Theme.of(context).colorScheme.onPrimary
+                                  : Theme.of(context).colorScheme.onSurface,
+                            ),
+                        softWrap: true,
+                      ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          '${timestamp.hour} : ${timestamp.minute}',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall!
-                              .copyWith(
-                                color: isMe
-                                    ? Theme.of(context).colorScheme.onPrimary
-                                    : Theme.of(context).colorScheme.onSurface,
-                              ),
-                          softWrap: true,
-                        ),
-                      ],
+                    const SizedBox(height: 3),
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: Text(
+                        '${timestamp.hour} : ${timestamp.minute}',
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                              color: isMe
+                                  ? Theme.of(context).colorScheme.onPrimary
+                                  : Theme.of(context).colorScheme.onSurface,
+                            ),
+                        softWrap: true,
+                      ),
                     ),
                   ],
                 ),
