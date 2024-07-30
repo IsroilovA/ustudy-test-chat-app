@@ -16,7 +16,10 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.outlineVariant,
+        foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
         title: const Text('UStudy test task'),
         centerTitle: true,
         actions: [

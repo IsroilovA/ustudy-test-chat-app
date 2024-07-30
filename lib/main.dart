@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       title: 'Ustudy test task',
       theme: ThemeData().copyWith(
           colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color.fromARGB(255, 63, 17, 177))),
+              seedColor: const Color.fromARGB(255, 198, 5, 5))),
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
