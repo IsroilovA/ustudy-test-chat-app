@@ -37,7 +37,13 @@ class MessageBubble extends StatelessWidget {
           crossAxisAlignment:
               isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           children: [
-            if (isFirstInSequence) Text(useremail!),
+            if (isFirstInSequence)
+              Text(
+                useremail!,
+                style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                    color:
+                        Theme.of(context).colorScheme.onSecondaryFixedVariant),
+              ),
             const SizedBox(height: 2),
             Container(
               decoration: BoxDecoration(

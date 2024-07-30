@@ -58,11 +58,16 @@ class ChatMessages extends StatelessWidget {
                 isMe: authenticatedUser.uid == currentMessageUserId,
               );
             } else {
-              return MessageBubble.first(
-                useremail: chatMessage['userEmail'],
-                timestamp: chatMessage['createdAt'].toDate(),
-                message: chatMessage['text'],
-                isMe: authenticatedUser.uid == currentMessageUserId,
+              return Column(
+                children: [
+                  const SizedBox(height: 20),
+                  MessageBubble.first(
+                    useremail: chatMessage['userEmail'],
+                    timestamp: chatMessage['createdAt'].toDate(),
+                    message: chatMessage['text'],
+                    isMe: authenticatedUser.uid == currentMessageUserId,
+                  ),
+                ],
               );
             }
           },
